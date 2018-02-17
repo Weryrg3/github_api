@@ -1,14 +1,25 @@
 defmodule GithubApi do
-  def list_repos do
-    request("/repositories")
+  def search_repos(params) do  ###
+    query = build_query(params)
+    request("/search/repositories?#{query}") ###
   end
 
-  def list_repos(%{user: user}) do
-    request("/users/#{user}/repos")
-  end
+  defp build_query(params) do
+    params
+    |> Enum.reduce(%{q: []}, fn {key, value}, acc -> 
+      case key do
+        :term -> Map.update!(acc, :q, &[value | &1])
+        :user -> Map.update!(acc, :q, &["user:#{value}" | &1])
+        :org -> Map.update!(acc, :q, &["org:#{value}" | &1])
+        :page -> Map.put(acc, :page, value)
+        :language -> Map.update!(acc, :q, &["language:#{value}" | &1])
+      end
+    end)
+    |> Map.update!(:q, fn q ->
+      Enum.join(q, " ")
+    end)
+    |> URI.encode_query()
 
-  def list_repos(%{org: org}) do
-    request("/orgs/#{org}/repos")
   end
 
   defp request(path) do
@@ -19,7 +30,13 @@ defmodule GithubApi do
 
     {:ok, response} = http_adapter.request(url)
 
-    Poison.decode(response.body)
+    {:ok, decoded} = Poison.decode(response.body)
+
+    result = %{
+      total_count: decoded["total_count"],
+      items: decoded["items"]
+    }
+    {:ok, result}
   end
 end
 # teste
