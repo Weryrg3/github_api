@@ -1,6 +1,8 @@
 defmodule GithubApi.IntegrationTest do
   use ExUnit.Case, async: false
 
+  alias GithubApi.SearchRepos
+
   @moduletag :integration_tests
 
   setup_all do
@@ -14,11 +16,11 @@ defmodule GithubApi.IntegrationTest do
 
   test "teste de integração API GitHub" do
     {:ok, result} =
-      GithubApi.search_repos(%{
-        org: "elixir-lang",
-        language: "elixir",
-        term: "flow"
-      })
+      SearchRepos.init()
+      |> SearchRepos.with_org("elixir-lang")
+      |> SearchRepos.with_language("elixir")
+      |> SearchRepos.with_term("flow")
+      |> GithubApi.exec()
 
     assert Enum.any?(result.items, &(&1["name"] == "flow"))
   end
