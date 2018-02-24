@@ -43,8 +43,6 @@ defmodule GithubApiTest do
 
     query = URI.decode_query(url.query)
     assert query == %{"q" => "org:elixir-lang", "page" => "2"} ###
-    # assert query == %{"q" => "user:Weryrg3", "page" => "2"}
-    # assert query == %{"q" => "elixir", "page" => "2"}
   end
 
   test "permite filtrar por linguagem" do
