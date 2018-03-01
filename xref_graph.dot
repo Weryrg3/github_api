@@ -1,0 +1,9 @@
+digraph "xref graph" {
+  "lib/github_api.ex"
+  "lib/github_api.ex" -> "lib/github_api/request.ex"
+  "lib/github_api/http_adapter.ex"
+  "lib/github_api/http_adapter/github_adapter.ex"
+  "lib/github_api/http_adapter/github_adapter.ex" -> "lib/github_api/http_adapter.ex" [label="(compile)"]
+  "lib/github_api/request.ex"
+  "lib/github_api/search_repos.ex"
+}
