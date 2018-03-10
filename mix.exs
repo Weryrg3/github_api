@@ -26,7 +26,8 @@ defmodule GithubApi.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.0"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 end
