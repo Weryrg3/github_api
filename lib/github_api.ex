@@ -13,7 +13,7 @@ defmodule GithubApi do
 
     {:ok, response} = http_adapter.request(url)
 
-    {:ok, decoded} = Poison.decode(response.body)
+    {:ok, decoded} = Poison.decode(response.body) #"Decodifica valor de Jason 'string' para valores corretos"
 
     result = %{
       total_count: decoded["total_count"],
